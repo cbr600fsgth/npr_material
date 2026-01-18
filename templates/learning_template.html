@@ -107,6 +107,24 @@
             border-left: 3px solid #3498db;
         }
 
+        .vocab-sentences {
+            background-color: #fef9e7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #f39c12;
+        }
+
+        .vocab-sentences p {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .vocab-sentences p:last-child {
+            margin-bottom: 0;
+        }
+
         .article-content {
             background-color: #fff;
             padding: 20px;
@@ -179,6 +197,13 @@
             <h2>Vocabulary</h2>
             <div class="vocabulary-section">
                 {{VOCABULARY}}
+            </div>
+        </section>
+
+        <section>
+            <h2>Vocabulary in Context</h2>
+            <div class="vocab-sentences">
+                {{VOCABULARY_SENTENCES}}
             </div>
         </section>
 

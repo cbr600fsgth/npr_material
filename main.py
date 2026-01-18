@@ -48,6 +48,10 @@ The JSON should have this exact structure:
             "example_sentence": "This is an example of good writing."
         }}
     ],
+    "vocabulary_sentences": [
+        "Sentence 1 using all vocabulary words.",
+        "Sentence 2 using all vocabulary words."
+    ],
     "article_content": {{
         "title": "Article Title",
         "summary": "A brief summary of the article content.",
@@ -62,8 +66,9 @@ The JSON should have this exact structure:
 
 Requirements:
 1. vocabulary: Select 6-10 important words for English learners. Consider words from NAWL (New Academic Word List), TSL (TOEIC Service List), and BSL (Business Service List). Include definition and example sentence for each.
-2. article_content: {title_instruction} Provide a summary and 3-5 main points.
-3. discussion_questions: Generate at least 10 thought-provoking discussion questions related to the text.
+2. vocabulary_sentences: Generate 1-3 sentences that use ALL of the vocabulary words. Shorter sentences are better.
+3. article_content: {title_instruction} Provide a summary and 3-5 main points.
+4. discussion_questions: Generate at least 10 thought-provoking discussion questions related to the text.
 
 Return ONLY valid JSON, no additional text or explanation.
 
@@ -133,6 +138,11 @@ def generate_html(content: dict, original_article: str) -> str:
     for point in article.get("main_points", []):
         main_points_html += f"<li>{point}</li>\n"
 
+    # Build vocabulary sentences HTML
+    vocab_sentences_html = ""
+    for sentence in content.get("vocabulary_sentences", []):
+        vocab_sentences_html += f"<p>{sentence}</p>\n"
+
     # Build discussion questions HTML
     questions_html = ""
     for i, question in enumerate(content.get("discussion_questions", []), 1):
@@ -146,6 +156,7 @@ def generate_html(content: dict, original_article: str) -> str:
     html = html.replace("{{SUMMARY}}", article.get("summary", ""))
     html = html.replace("{{MAIN_POINTS}}", main_points_html)
     html = html.replace("{{VOCABULARY}}", vocab_html)
+    html = html.replace("{{VOCABULARY_SENTENCES}}", vocab_sentences_html)
     html = html.replace("{{ARTICLE}}", article_html)
     html = html.replace("{{DISCUSSION_QUESTIONS}}", questions_html)
 
