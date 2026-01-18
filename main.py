@@ -183,8 +183,9 @@ def generate_content(text: str) -> dict:
 def main():
     """Start the Eel application."""
     print("Starting English Learning Content Generator...")
-    print("The application will open in your default browser.")
-    eel.start("index.html", size=(900, 800))
+    print("Open the following URL in your browser:")
+    print("  http://localhost:8000/index.html")
+    eel.start("index.html", size=(900, 800), mode=None, host="localhost", port=8000)
 
 
 if __name__ == "__main__":
