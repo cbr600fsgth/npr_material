@@ -4,6 +4,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 
+import boto3
+from botocore.exceptions import ClientError, NoCredentialsError
 from dotenv import load_dotenv
 import vertexai
 from vertexai.generative_models import GenerativeModel
@@ -175,6 +177,39 @@ def save_html(html_content: str) -> tuple[str, str]:
     return filename, str(filepath)
 
 
+def upload_to_s3(html_content: str) -> dict:
+    """Upload HTML content to S3 as index.html for static hosting."""
+    bucket_name = os.environ.get("AWS_S3_BUCKET_NAME")
+    if not bucket_name:
+        return {"error": "AWS_S3_BUCKET_NAME is not configured"}
+
+    region = os.environ.get("AWS_REGION", "ap-northeast-1")
+    prefix = os.environ.get("AWS_S3_PREFIX", "").strip("/")
+    s3_key = f"{prefix}/index.html" if prefix else "index.html"
+
+    try:
+        s3_client = boto3.client("s3", region_name=region)
+        s3_client.put_object(
+            Bucket=bucket_name,
+            Key=s3_key,
+            Body=html_content.encode("utf-8"),
+            ContentType="text/html; charset=utf-8",
+        )
+
+        s3_url = f"http://{bucket_name}.s3-website-{region}.amazonaws.com/"
+        if prefix:
+            s3_url += f"{prefix}/"
+
+        return {"success": True, "s3_url": s3_url, "s3_key": s3_key}
+
+    except NoCredentialsError:
+        return {"error": "AWS credentials not found"}
+    except ClientError as e:
+        return {"error": f"S3 error: {e.response['Error']['Message']}"}
+    except Exception as e:
+        return {"error": f"S3 upload failed: {str(e)}"}
+
+
 # Initialize Eel
 eel.init(str(BASE_DIR / "web"))
 
@@ -202,13 +237,23 @@ def generate_content(title: str, url: str, content: str) -> dict:
         # Save to file
         filename, filepath = save_html(html_content)
 
-        return {
+        result = {
             "success": True,
             "title": parsed_content.get("article_content", {}).get("title", ""),
             "url": url,
             "filename": filename,
             "filepath": filepath
         }
+
+        # Upload to S3 if configured
+        if os.environ.get("AWS_S3_BUCKET_NAME"):
+            s3_result = upload_to_s3(html_content)
+            if s3_result.get("success"):
+                result["s3_url"] = s3_result["s3_url"]
+            else:
+                result["s3_warning"] = s3_result.get("error")
+
+        return result
 
     except json.JSONDecodeError as e:
         return {
