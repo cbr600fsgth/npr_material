@@ -88,7 +88,27 @@ def parse_json_response(response_text: str) -> dict:
     return json.loads(text.strip())
 
 
-def generate_html(content: dict) -> str:
+def format_article_html(article_text: str) -> str:
+    """Format article text into HTML paragraphs."""
+    paragraphs = []
+    current_paragraph = []
+
+    for line in article_text.split("\n"):
+        line = line.strip()
+        if line:
+            current_paragraph.append(line)
+        else:
+            if current_paragraph:
+                paragraphs.append(" ".join(current_paragraph))
+                current_paragraph = []
+
+    if current_paragraph:
+        paragraphs.append(" ".join(current_paragraph))
+
+    return "\n".join(f"<p>{p}</p>" for p in paragraphs)
+
+
+def generate_html(content: dict, original_article: str) -> str:
     """Generate HTML content from the parsed JSON using template."""
     template_path = TEMPLATE_DIR / "learning_template.html"
 
@@ -118,11 +138,15 @@ def generate_html(content: dict) -> str:
     for i, question in enumerate(content.get("discussion_questions", []), 1):
         questions_html += f"<li>{question}</li>\n"
 
+    # Format original article into HTML paragraphs
+    article_html = format_article_html(original_article)
+
     # Replace placeholders in template
     html = template.replace("{{TITLE}}", article.get("title", "English Learning Content"))
     html = html.replace("{{SUMMARY}}", article.get("summary", ""))
     html = html.replace("{{MAIN_POINTS}}", main_points_html)
     html = html.replace("{{VOCABULARY}}", vocab_html)
+    html = html.replace("{{ARTICLE}}", article_html)
     html = html.replace("{{DISCUSSION_QUESTIONS}}", questions_html)
 
     return html
@@ -161,8 +185,8 @@ def generate_content(title: str, url: str, content: str) -> dict:
         # Parse JSON response
         parsed_content = parse_json_response(response_text)
 
-        # Generate HTML
-        html_content = generate_html(parsed_content)
+        # Generate HTML (pass original article text for Article section)
+        html_content = generate_html(parsed_content, content)
 
         # Save to file
         filename, filepath = save_html(html_content)

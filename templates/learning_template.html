@@ -107,6 +107,24 @@
             border-left: 3px solid #3498db;
         }
 
+        .article-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 30px;
+            line-height: 2;
+        }
+
+        .article-content p {
+            margin-bottom: 1em;
+            text-align: justify;
+        }
+
+        .article-content p:last-child {
+            margin-bottom: 0;
+        }
+
         .discussion-section ol {
             padding-left: 25px;
         }
@@ -161,6 +179,13 @@
             <h2>Vocabulary</h2>
             <div class="vocabulary-section">
                 {{VOCABULARY}}
+            </div>
+        </section>
+
+        <section>
+            <h2>Article</h2>
+            <div class="article-content">
+                {{ARTICLE}}
             </div>
         </section>
 
