@@ -51,6 +51,22 @@ textarea:focus {
     border-color: #3498db;
 }
 
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
 .button-section {
     text-align: center;
     margin-bottom: 30px;

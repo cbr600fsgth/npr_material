@@ -29,8 +29,13 @@ def init_vertex_ai():
     vertexai.init(project=project_id, location="us-central1")
 
 
-def create_prompt(text: str) -> str:
+def create_prompt(title: str, content: str) -> str:
     """Create the prompt for Gemini to analyze the English text."""
+    if title:
+        title_instruction = f'Use this exact title: "{title}"'
+    else:
+        title_instruction = "Generate an appropriate title based on the article content."
+
     return f"""Analyze the following English text and generate learning content in JSON format.
 
 The JSON should have this exact structure:
@@ -57,13 +62,13 @@ The JSON should have this exact structure:
 
 Requirements:
 1. vocabulary: Select 6-10 important words for English learners. Consider words from NAWL (New Academic Word List), TSL (TOEIC Service List), and BSL (Business Service List). Include definition and example sentence for each.
-2. article_content: Provide a clear title, summary, and 3-5 main points.
+2. article_content: {title_instruction} Provide a summary and 3-5 main points.
 3. discussion_questions: Generate at least 10 thought-provoking discussion questions related to the text.
 
 Return ONLY valid JSON, no additional text or explanation.
 
 English Text:
-{text}
+{content}
 """
 
 
@@ -140,7 +145,7 @@ eel.init(str(BASE_DIR / "web"))
 
 
 @eel.expose
-def generate_content(text: str) -> dict:
+def generate_content(title: str, url: str, content: str) -> dict:
     """Generate learning content from English text."""
     try:
         # Initialize Vertex AI
@@ -148,22 +153,24 @@ def generate_content(text: str) -> dict:
 
         # Create model and generate content
         model = GenerativeModel("gemini-2.5-flash")
-        prompt = create_prompt(text)
+        prompt = create_prompt(title, content)
 
         response = model.generate_content(prompt)
         response_text = response.text
 
         # Parse JSON response
-        content = parse_json_response(response_text)
+        parsed_content = parse_json_response(response_text)
 
         # Generate HTML
-        html_content = generate_html(content)
+        html_content = generate_html(parsed_content)
 
         # Save to file
         filename, filepath = save_html(html_content)
 
         return {
             "success": True,
+            "title": parsed_content.get("article_content", {}).get("title", ""),
+            "url": url,
             "filename": filename,
             "filepath": filepath
         }
