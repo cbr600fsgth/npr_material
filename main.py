@@ -68,7 +68,7 @@ The JSON should have this exact structure:
 }}
 
 Requirements:
-1. vocabulary: Select 6-10 important words for English learners. Consider words from NAWL (New Academic Word List), TSL (TOEIC Service List), and BSL (Business Service List). Include IPA pronunciation (International Phonetic Alphabet) in slashes (e.g., /ɪɡˈzæmpəl/), definition and example sentence for each.
+1. vocabulary: Select 6-10 important words for English learners. Consider words from NAWL (New Academic Word List), TSL (TOEIC Service List), and BSL (Business Service List). IMPORTANT: Always use the dictionary form (base form) of words - use infinitive for verbs (e.g., "go" not "went" or "going"), singular for nouns (e.g., "child" not "children"), and base form for adjectives (e.g., "good" not "better"). Include IPA pronunciation (International Phonetic Alphabet) in slashes (e.g., /ɪɡˈzæmpəl/), definition and example sentence for each.
 2. vocabulary_sentences: Generate 1-3 sentences that use ALL of the vocabulary words. Shorter sentences are better. IMPORTANT: Do NOT emphasize, highlight, or mark vocabulary words in any way. No bold, no asterisks, no quotes, no backticks, no underscores, no special formatting whatsoever. Write plain sentences as you would in a normal paragraph.
 3. article_content: {title_instruction} Provide a summary and 3-5 main points.
 4. discussion_questions: Generate at least 10 thought-provoking discussion questions related to the text. Include both article-specific questions and broader discussion questions. Reference the following examples for style and format:
