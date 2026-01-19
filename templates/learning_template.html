@@ -179,6 +179,22 @@
             border-radius: 4px;
         }
 
+        .search-link {
+            text-align: center;
+            margin-top: -15px;
+            margin-bottom: 25px;
+        }
+
+        .search-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .search-link a:hover {
+            text-decoration: underline;
+        }
+
         .footer {
             margin-top: 50px;
             text-align: center;
@@ -203,6 +219,11 @@
 <body>
     <div class="container">
         <h1>{{TITLE}}</h1>
+        <p class="search-link">
+            <a href="https://www.google.com/search?q={{TITLE_ENCODED}}" target="_blank" rel="noopener noreferrer">
+                Search this article on the web
+            </a>
+        </p>
 
         <section>
             <h2>Summary</h2>

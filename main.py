@@ -197,7 +197,10 @@ def generate_html(content: dict, original_article: str) -> str:
     article_html = format_article_html(original_article)
 
     # Replace placeholders in template
-    html = template.replace("{{TITLE}}", article.get("title", "English Learning Content"))
+    title = article.get("title", "English Learning Content")
+    title_encoded = quote(title)
+    html = template.replace("{{TITLE}}", title)
+    html = html.replace("{{TITLE_ENCODED}}", title_encoded)
     html = html.replace("{{SUMMARY}}", article.get("summary", ""))
     html = html.replace("{{MAIN_POINTS}}", main_points_html)
     html = html.replace("{{VOCABULARY}}", vocab_html)
