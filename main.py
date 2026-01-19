@@ -45,6 +45,7 @@ The JSON should have this exact structure:
     "vocabulary": [
         {{
             "word": "example",
+            "pronunciation": "/ɪɡˈzæmpəl/",
             "part_of_speech": "noun",
             "definition": "a thing characteristic of its kind",
             "example_sentence": "This is an example of good writing."
@@ -67,7 +68,7 @@ The JSON should have this exact structure:
 }}
 
 Requirements:
-1. vocabulary: Select 6-10 important words for English learners. Consider words from NAWL (New Academic Word List), TSL (TOEIC Service List), and BSL (Business Service List). Include definition and example sentence for each.
+1. vocabulary: Select 6-10 important words for English learners. Consider words from NAWL (New Academic Word List), TSL (TOEIC Service List), and BSL (Business Service List). Include IPA pronunciation (International Phonetic Alphabet) in slashes (e.g., /ɪɡˈzæmpəl/), definition and example sentence for each.
 2. vocabulary_sentences: Generate 1-3 sentences that use ALL of the vocabulary words. Shorter sentences are better. IMPORTANT: Do NOT emphasize, highlight, or mark vocabulary words in any way. No bold, no asterisks, no quotes, no backticks, no underscores, no special formatting whatsoever. Write plain sentences as you would in a normal paragraph.
 3. article_content: {title_instruction} Provide a summary and 3-5 main points.
 4. discussion_questions: Generate at least 10 thought-provoking discussion questions related to the text. Include both article-specific questions and broader discussion questions. Reference the following examples for style and format:
@@ -167,6 +168,7 @@ def generate_html(content: dict, original_article: str) -> str:
         vocab_html += f"""
         <div class="vocab-item">
             <div class="word"><a href="{oxford_url}" target="_blank">{word}</a></div>
+            <div class="pronunciation">{item.get('pronunciation', '')}</div>
             <div class="pos">{item.get('part_of_speech', '')}</div>
             <div class="definition">{item.get('definition', '')}</div>
             <div class="example">{item.get('example_sentence', '')}</div>
