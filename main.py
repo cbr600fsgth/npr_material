@@ -96,6 +96,18 @@ Example 2 (Climate/wealth inequality article):
 - How hopeful are you when it comes to climate change?
 - Do you know anyone who isn't concerned about climate change?
 
+Example 3 (Healthy fats/diet article):
+- Were you aware that fat is an important part of a healthy diet?
+- Why do you think fat hasn't always had a good reputation?
+- What are the main sources of healthy fats in your diet?
+- Do you think people are more aware of healthy eating now than in the past?
+- What do kids learn about nutrition in school in your country?
+- What do you know about your country's dietary guidelines?
+- Would you describe the typical diet in your country as healthy?
+- Would you say eating habits in your country are getting more or less healthy?
+- How has your diet changed as you've gotten older?
+- Have you seen any poor health or diet advice on the internet?
+
 Return ONLY valid JSON, no additional text or explanation.
 
 English Text:
