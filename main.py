@@ -167,9 +167,11 @@ def generate_html(content: dict, original_article: str) -> str:
         oxford_url = f"https://www.oxfordlearnersdictionaries.com/us/definition/english/{quote(word_lower)}?q={quote(word_lower)}"
         vocab_html += f"""
         <div class="vocab-item">
-            <div class="word"><a href="{oxford_url}" target="_blank">{word}</a></div>
-            <div class="pronunciation">{item.get('pronunciation', '')}</div>
-            <div class="pos">{item.get('part_of_speech', '')}</div>
+            <div class="word-header">
+                <span class="word"><a href="{oxford_url}" target="_blank">{word}</a></span>
+                <span class="pronunciation">{item.get('pronunciation', '')}</span>
+                <span class="pos">{item.get('part_of_speech', '')}</span>
+            </div>
             <div class="definition">{item.get('definition', '')}</div>
             <div class="example">{item.get('example_sentence', '')}</div>
         </div>
