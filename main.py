@@ -70,7 +70,31 @@ Requirements:
 1. vocabulary: Select 6-10 important words for English learners. Consider words from NAWL (New Academic Word List), TSL (TOEIC Service List), and BSL (Business Service List). Include definition and example sentence for each.
 2. vocabulary_sentences: Generate 1-3 sentences that use ALL of the vocabulary words. Shorter sentences are better.
 3. article_content: {title_instruction} Provide a summary and 3-5 main points.
-4. discussion_questions: Generate at least 10 thought-provoking discussion questions related to the text.
+4. discussion_questions: Generate at least 10 thought-provoking discussion questions related to the text. Include both article-specific questions and broader discussion questions. Reference the following examples for style and format:
+
+Example 1 (South Korea article):
+- What are your thoughts on South Korea's soft power?
+- Why do you think South Korean pop culture has become so popular globally?
+- Do you know anyone who's obsessed with all things South Korean?
+- Are you a fan of K-pop, Korean dramas or Korean films?
+- Have you used any K-beauty products? Were you happy with them?
+- What aspects of your country's culture are popular overseas?
+- What are some things foreigners often get wrong about your country?
+- What are you most proud of your country for?
+- What countries have you always been interested in?
+- If you could live anywhere in the world for a year, where would you choose?
+
+Example 2 (Climate/wealth inequality article):
+- What are your thoughts on Oxfam's findings?
+- Are you surprised that the super rich have such a massive carbon footprint?
+- Why do you think the super rich invest in the most polluting industries?
+- Would you support increasing taxes on highly polluting luxury goods?
+- What do you think could be done to take power away from the super rich and wealthy corporations?
+- How aggressive has your country been in the fight against climate change?
+- Are the effects of climate change already being felt in your country?
+- What do you think will be worst impacts of climate change on your country?
+- How hopeful are you when it comes to climate change?
+- Do you know anyone who isn't concerned about climate change?
 
 Return ONLY valid JSON, no additional text or explanation.
 
