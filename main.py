@@ -7,8 +7,7 @@ from pathlib import Path
 import boto3
 from botocore.exceptions import ClientError, NoCredentialsError
 from dotenv import load_dotenv
-import vertexai
-from vertexai.generative_models import GenerativeModel
+from google import genai
 
 # Load environment variables from .env file
 load_dotenv()
@@ -23,12 +22,12 @@ TEMPLATE_DIR = BASE_DIR / "templates"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 
-def init_vertex_ai():
-    """Initialize Vertex AI with project settings."""
+def get_genai_client():
+    """Get Google Gen AI client configured for Vertex AI."""
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
     if not project_id:
         raise ValueError("GOOGLE_CLOUD_PROJECT environment variable is not set")
-    vertexai.init(project=project_id, location="us-central1")
+    return genai.Client(vertexai=True, project=project_id, location="us-central1")
 
 
 def create_prompt(title: str, content: str) -> str:
@@ -254,14 +253,14 @@ eel.init(str(BASE_DIR / "web"))
 def generate_content(title: str, url: str, content: str) -> dict:
     """Generate learning content from English text."""
     try:
-        # Initialize Vertex AI
-        init_vertex_ai()
-
-        # Create model and generate content
-        model = GenerativeModel("gemini-2.5-flash")
+        # Create client and generate content
+        client = get_genai_client()
         prompt = create_prompt(title, content)
 
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
         response_text = response.text
 
         # Parse JSON response
