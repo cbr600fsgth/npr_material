@@ -6,13 +6,14 @@ Never use emojis in any output, code comments, or generated content.
 
 ## Git Commit
 
-Create a clear, descriptive commit message in Japanese.
+- Run `git commit` with all relevant changes.
+- Create a clear, descriptive commit message in Japanese.
 
 ## uv
 
 - Use uv for Python project and package management
 - Use modern commands: `uv add`, `uv remove`, `uv sync`
-- Do not use `pip` or `uv pip` commands
+- Do not use legacy commands such as `pip`, `uv pip`, etc
 
 ## Project Structure
 
