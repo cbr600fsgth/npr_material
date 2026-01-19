@@ -33,6 +33,8 @@ async function generateContent() {
                 ${result.url ? `<p>URL: <a href="${result.url}" target="_blank">${result.url}</a></p>` : ''}
                 <p>File saved: <strong>${result.filename}</strong></p>
                 <p>Path: <code>${result.filepath}</code></p>
+                ${result.s3_url ? `<p>S3 URL: <a href="${result.s3_url}" target="_blank">${result.s3_url}</a></p>` : ''}
+                ${result.s3_warning ? `<p style="color: orange;">S3 Warning: ${result.s3_warning}</p>` : ''}
             `;
         } else {
             statusDiv.className = 'status error';
