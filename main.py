@@ -196,6 +196,9 @@ def generate_html(content: dict, original_article: str, url: str = "") -> str:
     # Format original article into HTML paragraphs
     article_html = format_article_html(original_article)
 
+    # Count words in original article
+    word_count = len(original_article.split())
+
     # Replace placeholders in template
     title = article.get("title", "English Learning Content")
     title_encoded = quote(title)
@@ -218,6 +221,7 @@ def generate_html(content: dict, original_article: str, url: str = "") -> str:
     html = html.replace("{{VOCABULARY_SENTENCES}}", vocab_sentences_html)
     html = html.replace("{{ARTICLE}}", article_html)
     html = html.replace("{{DISCUSSION_QUESTIONS}}", questions_html)
+    html = html.replace("{{WORD_COUNT}}", str(word_count))
 
     return html
 
