@@ -194,7 +194,6 @@ def upload_to_s3(html_content: str) -> dict:
             Key=s3_key,
             Body=html_content.encode("utf-8"),
             ContentType="text/html; charset=utf-8",
-            ACL="public-read",
         )
 
         s3_url = f"http://{bucket_name}.s3-website-{region}.amazonaws.com/"
