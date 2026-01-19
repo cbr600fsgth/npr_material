@@ -152,7 +152,7 @@ def format_article_html(article_text: str) -> str:
     return "\n".join(f"<p>{p}</p>" for p in paragraphs)
 
 
-def generate_html(content: dict, original_article: str) -> str:
+def generate_html(content: dict, original_article: str, url: str = "") -> str:
     """Generate HTML content from the parsed JSON using template."""
     template_path = TEMPLATE_DIR / "learning_template.html"
 
@@ -199,7 +199,18 @@ def generate_html(content: dict, original_article: str) -> str:
     # Replace placeholders in template
     title = article.get("title", "English Learning Content")
     title_encoded = quote(title)
-    html = template.replace("{{TITLE}}", title)
+
+    # Generate title link tags if URL is provided
+    if url:
+        title_link_start = f'<a href="{url}" target="_blank" rel="noopener noreferrer">'
+        title_link_end = "</a>"
+    else:
+        title_link_start = ""
+        title_link_end = ""
+
+    html = template.replace("{{TITLE_LINK_START}}", title_link_start)
+    html = html.replace("{{TITLE_LINK_END}}", title_link_end)
+    html = html.replace("{{TITLE}}", title)
     html = html.replace("{{TITLE_ENCODED}}", title_encoded)
     html = html.replace("{{SUMMARY}}", article.get("summary", ""))
     html = html.replace("{{MAIN_POINTS}}", main_points_html)
@@ -278,7 +289,7 @@ def generate_content(title: str, url: str, content: str) -> dict:
         parsed_content = parse_json_response(response_text)
 
         # Generate HTML (pass original article text for Article section)
-        html_content = generate_html(parsed_content, content)
+        html_content = generate_html(parsed_content, content, url)
 
         # Save to file
         filename, filepath = save_html(html_content)
