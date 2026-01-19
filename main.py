@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import quote
 
 import boto3
 from botocore.exceptions import ClientError, NoCredentialsError
@@ -160,9 +161,12 @@ def generate_html(content: dict, original_article: str) -> str:
     # Build vocabulary HTML
     vocab_html = ""
     for item in content.get("vocabulary", []):
+        word = item.get('word', '')
+        word_lower = word.lower()
+        oxford_url = f"https://www.oxfordlearnersdictionaries.com/us/definition/english/{quote(word_lower)}?q={quote(word_lower)}"
         vocab_html += f"""
         <div class="vocab-item">
-            <div class="word">{item.get('word', '')}</div>
+            <div class="word"><a href="{oxford_url}" target="_blank">{word}</a></div>
             <div class="pos">{item.get('part_of_speech', '')}</div>
             <div class="definition">{item.get('definition', '')}</div>
             <div class="example">{item.get('example_sentence', '')}</div>
