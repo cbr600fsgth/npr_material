@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from google import genai
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
 
 # Initialize paths
@@ -333,7 +333,19 @@ def main():
     print("Starting English Learning Content Generator...")
     print("Open the following URL in your browser:")
     print("  http://localhost:8000/index.html")
-    eel.start("index.html", size=(900, 800), mode=None, host="localhost", port=8000)
+
+    if os.environ.get("HEADLESS_MODE") == "1":
+        # Service mode: keep the process alive even when browser tab is closed
+        eel.start(
+            "index.html",
+            mode=None,
+            host="localhost",
+            port=8000,
+            close_callback=lambda page, sockets: None,
+        )
+    else:
+        # Development mode: default behavior
+        eel.start("index.html", size=(900, 800), mode=None, host="localhost", port=8000)
 
 
 if __name__ == "__main__":
