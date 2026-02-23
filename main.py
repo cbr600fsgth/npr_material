@@ -238,30 +238,47 @@ def save_html(html_content: str) -> tuple[str, str]:
     return filename, str(filepath)
 
 
-def upload_to_s3(html_content: str) -> dict:
-    """Upload HTML content to S3 as index.html for static hosting."""
+def upload_to_s3(html_content: str, filename: str = None) -> dict:
+    """Upload HTML content to S3 as index.html for static hosting.
+
+    Args:
+        html_content: The HTML content to upload
+        filename: Optional timestamped filename for history archiving
+    """
     bucket_name = os.environ.get("AWS_S3_BUCKET_NAME")
     if not bucket_name:
         return {"error": "AWS_S3_BUCKET_NAME is not configured"}
 
     region = os.environ.get("AWS_REGION", "ap-northeast-1")
     prefix = os.environ.get("AWS_S3_PREFIX", "").strip("/")
-    s3_key = f"{prefix}/index.html" if prefix else "index.html"
+    s3_key_index = f"{prefix}/index.html" if prefix else "index.html"
 
     try:
         s3_client = boto3.client("s3", region_name=region)
+
+        # Upload as index.html (always overwrite with latest)
         s3_client.put_object(
             Bucket=bucket_name,
-            Key=s3_key,
+            Key=s3_key_index,
             Body=html_content.encode("utf-8"),
             ContentType="text/html; charset=utf-8",
         )
+
+        # Upload with timestamped filename for history archiving
+        if filename:
+            s3_key_timestamped = f"{prefix}/{filename}" if prefix else filename
+            s3_client.put_object(
+                Bucket=bucket_name,
+                Key=s3_key_timestamped,
+                Body=html_content.encode("utf-8"),
+                ContentType="text/html; charset=utf-8",
+            )
 
         s3_url = f"http://{bucket_name}.s3-website-{region}.amazonaws.com/"
         if prefix:
             s3_url += f"{prefix}/"
 
-        return {"success": True, "s3_url": s3_url, "s3_key": s3_key}
+        return {"success": True, "s3_url": s3_url, "s3_key": s3_key_index}
 
     except NoCredentialsError:
         return {"error": "AWS credentials not found"}
@@ -308,7 +325,7 @@ def generate_content(title: str, url: str, content: str) -> dict:
 
         # Upload to S3 if configured
         if os.environ.get("AWS_S3_BUCKET_NAME"):
-            s3_result = upload_to_s3(html_content)
+            s3_result = upload_to_s3(html_content, filename)
             if s3_result.get("success"):
                 result["s3_url"] = s3_result["s3_url"]
             else:
