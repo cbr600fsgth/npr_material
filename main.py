@@ -339,13 +339,13 @@ def main():
         eel.start(
             "index.html",
             mode=None,
-            host="localhost",
+            host="0.0.0.0",
             port=8000,
             close_callback=lambda page, sockets: None,
         )
     else:
         # Development mode: default behavior
-        eel.start("index.html", size=(900, 800), mode=None, host="localhost", port=8000)
+        eel.start("index.html", size=(900, 800), mode=None, host="0.0.0.0", port=8000)
 
 
 if __name__ == "__main__":
