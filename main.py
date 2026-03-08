@@ -301,7 +301,7 @@ def generate_content(title: str, url: str, content: str) -> dict:
         prompt = create_prompt(title, content)
 
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-pro",
             contents=prompt
         )
         response_text = response.text
